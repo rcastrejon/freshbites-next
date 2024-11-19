@@ -223,25 +223,27 @@ const Sidebar = React.forwardRef<
     if (isMobile) {
       return (
         <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-          <SidebarMobileController>
-            <SheetContent
-              data-sidebar="sidebar"
-              data-mobile="true"
-              className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
-              style={
-                {
-                  "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
-                } as React.CSSProperties
-              }
-              side={side}
-            >
-              <SheetTitle className="sr-only">Barra lateral</SheetTitle>
-              <SheetDescription className="sr-only">
-                Navegación principal de la aplicación
-              </SheetDescription>
-              <div className="flex h-full w-full flex-col">{children}</div>
-            </SheetContent>
-          </SidebarMobileController>
+          <React.Suspense>
+            <SidebarMobileController>
+              <SheetContent
+                data-sidebar="sidebar"
+                data-mobile="true"
+                className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+                style={
+                  {
+                    "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
+                  } as React.CSSProperties
+                }
+                side={side}
+              >
+                <SheetTitle className="sr-only">Barra lateral</SheetTitle>
+                <SheetDescription className="sr-only">
+                  Navegación principal de la aplicación
+                </SheetDescription>
+                <div className="flex h-full w-full flex-col">{children}</div>
+              </SheetContent>
+            </SidebarMobileController>
+          </React.Suspense>
         </Sheet>
       );
     }
