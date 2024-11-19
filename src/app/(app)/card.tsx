@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { Clock, Coins, Leaf, ShieldCheck, Utensils } from "lucide-react";
-import { type Recipe } from "@/lib/db/types";
+import { type RecipeWithAuthor } from "@/lib/db/types";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
-export function RecipeCard({ recipe }: { recipe: Recipe }) {
+export function RecipeCard({ recipe }: { recipe: RecipeWithAuthor }) {
   return (
     <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-md">
       <div className="relative aspect-square">
@@ -21,7 +21,7 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
             {recipe.title}
           </h4>
           <p className="mt-1 font-serif text-xs italic text-muted">
-            Por John Doe
+            Por {recipe.author?.fullName ?? "[ELIMINADO]"}
           </p>
         </div>
         <VerifiedBadge isVerified={recipe.verifiedAt !== null} />

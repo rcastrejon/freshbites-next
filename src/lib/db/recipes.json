@@ -1,6 +1,5 @@
 [
   {
-    "id": "rec_1YNdQ1sernPt4ASZ",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Sopa de Lentejas",
     "description": "Una sopa nutritiva y económica, ideal para estudiantes.",
@@ -9,7 +8,7 @@
     "caloriesPerServing": 400,
     "servings": 4,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0hB2YgJ715KnyX6S1F0Dukzd9eWCgxHpAlwVhj",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": [
       "Lentejas",
       "Zanahoria",
@@ -31,7 +30,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_6KA1hvvFEMjeMK3Q",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Papas al Horno con Especias",
     "description": "Una guarnición o plato principal saludable y sabroso.",
@@ -40,7 +38,7 @@
     "caloriesPerServing": 250,
     "servings": 1,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0h6e0TDWJsIYigrHn50uWM87AxP14dVtNavZmE",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": ["Papas", "Aceite de oliva", "Especias"],
     "instructions": [
       "Corta las papas en cubos.",
@@ -55,7 +53,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_AUFmemAUUeLbBSmW",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Huevos Revueltos con Espinacas",
     "description": "Un desayuno rápido y saludable rico en proteínas.",
@@ -64,7 +61,7 @@
     "caloriesPerServing": 200,
     "servings": 1,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0hKf7RXE5SGfqp7mk9ZCUj0crMX4QhYDEu1gNz",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": ["Huevos", "Espinacas", "Cebolla"],
     "instructions": [
       "Bate los huevos.",
@@ -79,7 +76,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_BcYdjZam9aeuPVCn",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Quesadillas de Frijoles",
     "description": "Una opción rápida, económica y vegetariana.",
@@ -91,11 +87,10 @@
     "verifiedAt": null,
     "ingredients": ["Tortillas de maíz", "Frijoles refritos", "Queso"],
     "instructions": ["Calienta las tortillas con frijoles y queso."],
-    "nutritionalFacts": [],
+    "nutritionalFacts": null,
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_Fpjm5eRVS34hts2V",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Tortitas de Avena",
     "description": "Un desayuno o merienda saludable y fácil de preparar.",
@@ -110,11 +105,10 @@
       "Mezcla todos los ingredientes.",
       "Cocina las tortitas en una sartén."
     ],
-    "nutritionalFacts": [],
+    "nutritionalFacts": null,
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_G4w91rLByNndn4y1",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Pasta con Verduras",
     "description": "Una pasta sencilla y nutritiva con vegetales frescos.",
@@ -136,11 +130,10 @@
       "Saltea las verduras.",
       "Mezcla la pasta con las verduras y la salsa."
     ],
-    "nutritionalFacts": [],
+    "nutritionalFacts": null,
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_HpnEbrbA4C83YYMv",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Arroz con Pollo y Verduras",
     "description": "Un plato completo y equilibrado con arroz, pollo y verduras.",
@@ -149,7 +142,7 @@
     "caloriesPerServing": 400,
     "servings": 1,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0hKf7RXE5SGfqp7mk9ZCUj0crMX4QhYDEu1gNz",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": [
       "Arroz integral",
       "Pollo",
@@ -170,7 +163,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_KHtkkZHQygmCVRaz",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Pasta con Tomate",
     "description": "Un clásico rápido y barato para cualquier estudiante.",
@@ -179,7 +171,7 @@
     "caloriesPerServing": 380,
     "servings": 2,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0hKf7RXE5SGfqp7mk9ZCUj0crMX4QhYDEu1gNz",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": ["Pasta", "Salsa de tomate", "Ajo", "Aceite de oliva"],
     "instructions": [
       "Hervir la pasta.",
@@ -195,7 +187,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_KKjZTbCrfJnrdFUq",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Sopa de Lentejas",
     "description": "Una sopa nutritiva y económica, perfecta para los días fríos.",
@@ -204,7 +195,7 @@
     "caloriesPerServing": 350,
     "servings": 1,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0h6e0TDWJsIYigrHn50uWM87AxP14dVtNavZmE",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": ["Lentejas", "Zanahoria", "Papa", "Cebolla", "Ajo"],
     "instructions": ["Cocina las lentejas con las verduras picadas."],
     "nutritionalFacts": [
@@ -215,7 +206,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_Nhocf9hVGcQSyu73",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Sándwich de Atún Saludable",
     "description": "Un sándwich de atún nutritivo y económico, perfecto para el almuerzo o la cena.",
@@ -224,7 +214,7 @@
     "caloriesPerServing": 250,
     "servings": 1,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0hKf7RXE5SGfqp7mk9ZCUj0crMX4QhYDEu1gNz",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": [
       "Pan integral",
       "Atún en agua",
@@ -245,7 +235,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_TBJqmMybZnC5189t",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Tacos de Frijoles Refritos",
     "description": "Tacos rápidos y económicos con frijoles refritos, perfectos para una comida sencilla.",
@@ -254,7 +243,7 @@
     "caloriesPerServing": 350,
     "servings": 2,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0hKf7RXE5SGfqp7mk9ZCUj0crMX4QhYDEu1gNz",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": [
       "Tortillas de maíz",
       "Frijoles refritos",
@@ -275,7 +264,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_TC6DG2qb4TGCbQKz",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Ensalada de Garbanzos",
     "description": "Una ensalada rica en proteínas y fibra, ideal para una comida completa.",
@@ -284,7 +272,7 @@
     "caloriesPerServing": 300,
     "servings": 1,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0hB2YgJ715KnyX6S1F0Dukzd9eWCgxHpAlwVhj",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": [
       "Garbanzos cocidos",
       "Tomate",
@@ -305,7 +293,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_dWT7dCCWNTb7oN1p",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Arroz con Huevo",
     "description": "Comida sencilla y llenadora, perfecta para un almuerzo rápido.",
@@ -314,7 +301,7 @@
     "caloriesPerServing": 350,
     "servings": 1,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0hB2YgJ715KnyX6S1F0Dukzd9eWCgxHpAlwVhj",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": ["Arroz", "Huevos", "Aceite", "Sal"],
     "instructions": [
       "Cocinar el arroz.",
@@ -330,7 +317,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_ecY64GP4YN3hL4Zh",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Ensalada de Nopales",
     "description": "Una opción saludable y económica.",
@@ -339,7 +325,7 @@
     "caloriesPerServing": 200,
     "servings": 2,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0hKf7RXE5SGfqp7mk9ZCUj0crMX4QhYDEu1gNz",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": ["Nopales", "Tomate", "Cebolla", "Cilantro", "Limón"],
     "instructions": [
       "Cocer los nopales.",
@@ -355,7 +341,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_ehrYbcaZX5QfVkRF",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Sincronizadas de Jamón y Queso",
     "description": "Un desayuno o cena rápida y económica: sincronizadas de jamón y queso.",
@@ -364,7 +349,7 @@
     "caloriesPerServing": 250,
     "servings": 1,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0hKf7RXE5SGfqp7mk9ZCUj0crMX4QhYDEu1gNz",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": ["Tortillas de harina", "Jamón", "Queso Oaxaca"],
     "instructions": [
       "Coloca una tortilla en un sartén caliente. Agrega jamón y queso. Cubre con otra tortilla y cocina por ambos lados."
@@ -377,7 +362,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_q4GsGcthGGeVQYLK",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Sándwich de Atún",
     "description": "Fácil y rápido, ideal para una cena ligera.",
@@ -386,7 +370,7 @@
     "caloriesPerServing": 320,
     "servings": 1,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0h6e0TDWJsIYigrHn50uWM87AxP14dVtNavZmE",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": ["Pan integral", "Atún en lata", "Mayonesa", "Lechuga"],
     "instructions": [
       "Mezclar atún con mayonesa.",
@@ -402,7 +386,6 @@
     "createdAt": "2024-11-15 03:09:34"
   },
   {
-    "id": "rec_zKCSd2TAzYrBvpPw",
     "authorId": "user_2orJqdrd3Tv8lPYPw95d78WMsgJ",
     "title": "Quesadillas Simples",
     "description": "Rápido y fácil, solo necesitas tortillas y queso.",
@@ -411,7 +394,7 @@
     "caloriesPerServing": 300,
     "servings": 1,
     "imageUrl": "https://utfs.io/f/HGtLyXVKOm0h6e0TDWJsIYigrHn50uWM87AxP14dVtNavZmE",
-    "verifiedAt": 1731640173,
+    "verifiedAt": "2024-11-15 03:09:33",
     "ingredients": ["Tortillas de harina", "Queso Oaxaca"],
     "instructions": [
       "Calentar una tortilla en un sartén.",

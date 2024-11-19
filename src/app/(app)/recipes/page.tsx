@@ -1,32 +1,38 @@
-import recipes from "@/lib/db/recipes.json";
 import { RecipeCard } from "../card";
 import { z } from "zod";
 import { Pagination } from "./pagination";
-import { unstable_cache as cache } from "next/cache";
+import { db } from "@/lib/db";
+import { count, desc } from "drizzle-orm";
+import { recipeTable } from "@/lib/db/schema";
 
-const getRecipes = cache(
-  async (page: number) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    const PAGE_SIZE = 8;
+const getRecipes = async (page: number) => {
+  const PAGE_SIZE = 8;
 
-    const start = (page - 1) * PAGE_SIZE;
-    const end = start + PAGE_SIZE;
-    const totalPages = Math.ceil(recipes.length / PAGE_SIZE);
+  const offset = (page - 1) * PAGE_SIZE;
 
-    return {
-      recipes: recipes.slice(start, end),
-      pagination: {
-        totalPages,
-        hasPreviousPage: page > 1,
-        hasNextPage: page < totalPages,
+  const [[countResult], recipes] = await db.batch([
+    db.select({ count: count() }).from(recipeTable),
+    db.query.recipeTable.findMany({
+      with: {
+        author: true,
       },
-    };
-  },
-  undefined,
-  {
-    tags: ["recipes"],
-  },
-);
+      orderBy: desc(recipeTable.createdAt),
+      limit: PAGE_SIZE,
+      offset: offset,
+    }),
+  ]);
+  const totalCount = countResult?.count ?? 0;
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+
+  return {
+    recipes: recipes,
+    pagination: {
+      totalPages,
+      hasPreviousPage: page > 1,
+      hasNextPage: page < totalPages,
+    },
+  };
+};
 
 export default function Recipes({
   searchParams,

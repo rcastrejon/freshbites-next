@@ -74,11 +74,11 @@ function NewRecipeForm() {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="preparationTime">Tiempo</Label>
+          <Label htmlFor="timeInMinutes">Tiempo</Label>
           <div className="relative">
             <Input
-              id="preparationTime"
-              name="preparationTime"
+              id="timeInMinutes"
+              name="timeInMinutes"
               className="peer pe-12"
               type="number"
               min="1"

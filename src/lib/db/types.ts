@@ -1,10 +1,6 @@
-export type Recipe = {
-  id: string;
-  title: string;
-  imageUrl: string;
-  timeInMinutes: number;
-  cost: number;
-  servings: number;
-  caloriesPerServing?: number | null;
-  verifiedAt: number | null;
-};
+import type { recipeTable, userTable } from "./schema";
+
+export type Recipe = typeof recipeTable.$inferSelect;
+export type Author = typeof userTable.$inferSelect;
+
+export type RecipeWithAuthor = Recipe & { author: Author | null };

@@ -16,6 +16,7 @@ import { Book, House, Icon } from "lucide-react";
 import { appleCore } from "@lucide/lab";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SearchInput } from "./search";
 
 export function AppSidebar() {
   return (
@@ -36,7 +37,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup className="py-0">
-          <SidebarGroupContent className="grid">search</SidebarGroupContent>
+          <SidebarGroupContent className="grid">
+            <SearchInput />
+          </SidebarGroupContent>
         </SidebarGroup>
       </SidebarHeader>
       <SidebarContent>

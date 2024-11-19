@@ -235,6 +235,7 @@ const Sidebar = React.forwardRef<
                   } as React.CSSProperties
                 }
                 side={side}
+                onOpenAutoFocus={(e) => e.preventDefault()}
               >
                 <SheetTitle className="sr-only">Barra lateral</SheetTitle>
                 <SheetDescription className="sr-only">
