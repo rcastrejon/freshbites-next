@@ -17,6 +17,7 @@ import { appleCore } from "@lucide/lab";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SearchInput } from "./search";
+import { Suspense } from "react";
 
 export function AppSidebar() {
   return (
@@ -38,7 +39,9 @@ export function AppSidebar() {
         </SidebarGroup>
         <SidebarGroup className="py-0">
           <SidebarGroupContent className="grid">
-            <SearchInput />
+            <Suspense>
+              <SearchInput />
+            </Suspense>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarHeader>

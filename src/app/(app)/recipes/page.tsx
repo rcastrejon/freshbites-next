@@ -2,8 +2,10 @@ import { RecipeCard } from "../card";
 import { z } from "zod";
 import { Pagination } from "./pagination";
 import { db } from "@/lib/db";
-import { count, desc } from "drizzle-orm";
+import { count, desc, inArray } from "drizzle-orm";
 import { recipeTable } from "@/lib/db/schema";
+import { queryVectors } from "@/lib/server/vectors";
+import { Suspense } from "react";
 
 const getRecipes = async (page: number) => {
   const PAGE_SIZE = 8;
@@ -34,33 +36,82 @@ const getRecipes = async (page: number) => {
   };
 };
 
-export default function Recipes({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  const page = searchParams.then((p) => p.page as string | undefined);
+const searchRecipes = async (q: string) => {
+  const matchingVectors = await queryVectors(q);
+  const scoreMap = Object.fromEntries(
+    matchingVectors
+      .filter((vector) => vector.score > 0.72)
+      .map((vector) => [vector.id as string, vector.score]),
+  );
+  const ids = Object.keys(scoreMap);
+  const recipes = await db.query.recipeTable.findMany({
+    with: {
+      author: true,
+    },
+    where: inArray(recipeTable.id, ids),
+  });
+  recipes.sort((a, b) => (scoreMap[b.id] ?? 0) - (scoreMap[a.id] ?? 0));
+  return {
+    recipes,
+  };
+};
+
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
+
+export default function Recipes(props: { searchParams: SearchParams }) {
+  const searchParams = props.searchParams.then((p) => ({
+    page: p.page as string | undefined,
+    q: p.q as string | undefined,
+  }));
   return (
     <div>
       <h3 className="mb-3 border-b-2 border-b-foreground pb-1 font-serif text-2xl font-bold">
         Recetas
       </h3>
-      <CardGrid page={page} />
+      <CardGrid searchParams={searchParams} />
     </div>
   );
 }
 
-const searchSchema = z.object({
-  page: z.number().int().positive().optional().catch(1),
-});
+const searchSchema = z.union([
+  z.object({
+    q: z.string().min(1),
+  }),
+  z.object({
+    page: z
+      .string()
+      .optional()
+      .refine((v) => {
+        if (v === undefined) return true;
+        const num = parseInt(v);
+        return !isNaN(num) && num > 0;
+      })
+      .transform((v) => (v !== undefined ? parseInt(v) : undefined)),
+  }),
+]);
 
-async function CardGrid(props: { page: Promise<string | undefined> }) {
-  const page = await props.page;
-  const search = searchSchema.parse({
-    page: parseInt(page ?? ""),
+async function CardGrid(props: {
+  searchParams: Promise<Record<string, string | undefined>>;
+}) {
+  const { page, q } = await props.searchParams;
+  const parsedSearch = searchSchema.parse({
+    page,
+    q,
   });
 
-  const { recipes, pagination } = await getRecipes(search.page ?? 1);
+  if ("q" in parsedSearch) {
+    const { recipes } = await searchRecipes(parsedSearch.q);
+
+    return (
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
+        {recipes.map((recipe) => (
+          <RecipeCard key={recipe.id} recipe={recipe} />
+        ))}
+      </div>
+    );
+  }
+
+  const { recipes, pagination } = await getRecipes(parsedSearch.page ?? 1);
 
   return (
     <>
@@ -69,11 +120,13 @@ async function CardGrid(props: { page: Promise<string | undefined> }) {
           <RecipeCard key={recipe.id} recipe={recipe} />
         ))}
       </div>
-      <Pagination
-        hasNextPage={pagination.hasNextPage}
-        hasPreviousPage={pagination.hasPreviousPage}
-        page={search.page ?? 1}
-      />
+      <Suspense>
+        <Pagination
+          hasNextPage={pagination.hasNextPage}
+          hasPreviousPage={pagination.hasPreviousPage}
+          page={parsedSearch.page ?? 1}
+        />
+      </Suspense>
     </>
   );
 }

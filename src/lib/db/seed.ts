@@ -3,6 +3,7 @@ import "../server/envConfig";
 import { db } from ".";
 import { recipeTable } from "./schema";
 import recipes from "./recipes.json";
+import { upsertMultipleVectors } from "../server/vectors";
 
 async function main() {
   await db.delete(recipeTable).all();
@@ -13,9 +14,23 @@ async function main() {
     verifiedAt: recipe.verifiedAt ? new Date(recipe.verifiedAt) : null,
   }));
 
-  await db.insert(recipeTable).values(transformedRecipes).returning();
-
+  const insertResults = await db
+    .insert(recipeTable)
+    .values(transformedRecipes)
+    .returning();
   console.log("Seeded recipes");
+
+  const newRecipes = insertResults
+    .map((recipe) => {
+      if (!recipe) {
+        console.error("Failed to insert recipe");
+        return null;
+      }
+      return recipe;
+    })
+    .filter((recipe) => recipe !== null);
+  await upsertMultipleVectors(newRecipes);
+  console.log("Seeded vectors");
 }
 
 void main();
