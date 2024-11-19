@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import { esMX } from "@clerk/localizations";
 
 export const metadata: Metadata = {
   title: "FreshBites",
@@ -13,8 +15,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body className="antialiased">{children}</body>
-    </html>
+    <ClerkProvider localization={esMX}>
+      <html lang="es">
+        <body className="antialiased">{children}</body>
+      </html>
+    </ClerkProvider>
   );
 }

@@ -6,6 +6,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -20,16 +21,23 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex h-8 items-center">
-          <h2 className="font-serif text-3xl font-bold md:text-2xl">
-            FreshB
-            <Icon
-              iconNode={appleCore}
-              className="mb-1.5 inline h-6 w-6 md:h-5 md:w-5"
-            />
-            tes
-          </h2>
-        </div>
+        <SidebarGroup className="py-0">
+          <SidebarGroupContent>
+            <div className="flex h-8 items-center">
+              <h2 className="font-serif text-3xl font-bold md:text-2xl">
+                FreshB
+                <Icon
+                  iconNode={appleCore}
+                  className="mb-1.5 inline h-6 w-6 md:h-5 md:w-5"
+                />
+                tes
+              </h2>
+            </div>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup className="py-0">
+          <SidebarGroupContent className="grid">search</SidebarGroupContent>
+        </SidebarGroup>
       </SidebarHeader>
       <SidebarContent>
         <NavLinks />
@@ -43,6 +51,7 @@ function NavLinks() {
   const pathname = usePathname();
   return (
     <SidebarGroup>
+      <SidebarGroupLabel>Menú principal</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
           <SidebarMenuItem>

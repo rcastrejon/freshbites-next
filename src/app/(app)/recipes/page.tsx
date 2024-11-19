@@ -28,7 +28,7 @@ const getRecipes = cache(
   },
 );
 
-export default async function Recipes({
+export default function Recipes({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

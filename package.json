@@ -10,6 +10,8 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@clerk/localizations": "^3.6.4",
+    "@clerk/nextjs": "^6.4.0",
     "@lucide/lab": "^0.1.2",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-label": "^2.1.0",
