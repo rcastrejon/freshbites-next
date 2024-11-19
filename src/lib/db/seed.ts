@@ -3,7 +3,7 @@ import "../server/envConfig";
 import { db } from ".";
 import { recipeTable } from "./schema";
 import recipes from "./recipes.json";
-import { upsertMultipleVectors } from "../server/vectors";
+import { dropAll, upsertMultipleVectors } from "../server/vectors";
 
 async function main() {
   await db.delete(recipeTable).all();
@@ -19,6 +19,9 @@ async function main() {
     .values(transformedRecipes)
     .returning();
   console.log("Seeded recipes");
+
+  await dropAll();
+  console.log("Dropped vectors");
 
   const newRecipes = insertResults
     .map((recipe) => {

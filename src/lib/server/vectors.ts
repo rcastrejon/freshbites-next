@@ -70,3 +70,7 @@ export async function deleteVector(id: string) {
     namespace: getNamespace(),
   });
 }
+
+export async function dropAll() {
+  return await index.reset({ namespace: getNamespace() });
+}
