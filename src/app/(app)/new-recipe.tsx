@@ -45,7 +45,7 @@ export function NewRecipeModal() {
 
 function NewRecipeForm() {
   return (
-    <Form classID="m-0" action={createRecipe}>
+    <Form className="m-0" action={createRecipe}>
       <div className="grid gap-4 py-4">
         <ImageInput />
         <div className="space-y-2">

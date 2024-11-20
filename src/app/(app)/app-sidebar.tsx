@@ -12,13 +12,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Book, House, Icon } from "lucide-react";
+import { Book, House, Icon, Shield } from "lucide-react";
 import { appleCore } from "@lucide/lab";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SearchInput } from "./search";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
+import { Protect } from "@clerk/nextjs";
 
 const NavPinned = dynamic(() => import("./nav-pinned"), { ssr: false });
 
@@ -80,6 +81,20 @@ function NavLinks() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+          <Protect
+            condition={(has) =>
+              has({ role: "org:member" }) || has({ role: "org:admin" })
+            }
+          >
+            <SidebarMenuItem>
+              <SidebarMenuButton isActive={pathname.includes("/admin")} asChild>
+                <Link href="/admin">
+                  <Shield />
+                  Admin
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </Protect>
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
