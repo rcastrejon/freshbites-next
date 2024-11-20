@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ActionButtons } from "./buttons";
 
 const getRecipe = async (id: string) => {
   const recipe = await db.query.recipeTable.findFirst({
@@ -77,6 +78,7 @@ export default async function RecipeDetails(props: {
               </Badge>
             )}
           </div>
+          <ActionButtons recipe={recipe} />
         </div>
       </div>
       <Separator className="my-3" />

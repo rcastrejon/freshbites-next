@@ -1,10 +1,24 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
-import { Clock, Coins, Leaf, ShieldCheck, Utensils } from "lucide-react";
+import {
+  Clock,
+  Coins,
+  Leaf,
+  Pin,
+  PinOff,
+  ShieldCheck,
+  Utensils,
+} from "lucide-react";
 import { type RecipeWithAuthor } from "@/lib/db/types";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import { OnlyPinned, OnlyUnpinned } from "./pin-button";
+
+const PinButton = dynamic(() => import("./pin-button"), { ssr: false });
 
 export function RecipeCard({ recipe }: { recipe: RecipeWithAuthor }) {
   return (
@@ -16,6 +30,23 @@ export function RecipeCard({ recipe }: { recipe: RecipeWithAuthor }) {
           loading="eager"
           className="h-full w-full rounded-t-xl object-cover"
         />
+        <Button
+          size="icon"
+          variant="secondary"
+          className="absolute left-2 top-2 h-8 w-8 rounded-full backdrop-blur-sm"
+          asChild
+        >
+          <PinButton recipe={recipe}>
+            <OnlyUnpinned>
+              <Pin className="h-4 w-4" />
+              <span className="sr-only">Anclar receta</span>
+            </OnlyUnpinned>
+            <OnlyPinned>
+              <PinOff className="h-4 w-4" />
+              <span className="sr-only">Desanclar receta</span>
+            </OnlyPinned>
+          </PinButton>
+        </Button>
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-2 pt-12">
           <h4 className="font-serif text-base font-semibold leading-none text-card">
             {recipe.title}

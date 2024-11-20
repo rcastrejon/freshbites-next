@@ -18,6 +18,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SearchInput } from "./search";
 import { Suspense } from "react";
+import dynamic from "next/dynamic";
+
+const NavPinned = dynamic(() => import("./nav-pinned"), { ssr: false });
 
 export function AppSidebar() {
   return (
@@ -47,6 +50,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <NavLinks />
+        <NavPinned />
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
