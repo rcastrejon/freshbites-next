@@ -13,7 +13,7 @@ export function SearchInput() {
       <Input
         key={searchParams.get("q")}
         name="q"
-        className="peer pe-9 md:h-8"
+        className="peer bg-background pe-9 text-foreground md:h-8"
         placeholder="Buscar recetas..."
         type="search"
         defaultValue={searchParams.get("q") ?? ""}

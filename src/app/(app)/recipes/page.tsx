@@ -102,6 +102,10 @@ async function CardGrid(props: {
   if ("q" in parsedSearch) {
     const { recipes } = await searchRecipes(parsedSearch.q);
 
+    if (recipes.length === 0) {
+      return <NoResultsFound />;
+    }
+
     return (
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
         {recipes.map((recipe) => (
@@ -112,6 +116,10 @@ async function CardGrid(props: {
   }
 
   const { recipes, pagination } = await getRecipes(parsedSearch.page ?? 1);
+
+  if (recipes.length === 0) {
+    return <NoResultsFound />;
+  }
 
   return (
     <>
@@ -128,5 +136,18 @@ async function CardGrid(props: {
         />
       </Suspense>
     </>
+  );
+}
+
+function NoResultsFound() {
+  return (
+    <div className="flex min-h-[200px] flex-col items-center justify-center gap-2 rounded-md border border-input bg-background p-8 text-center">
+      <p className="font-serif text-lg font-bold text-foreground">
+        No se encontraron recetas
+      </p>
+      <p className="text-sm text-muted-foreground">
+        Intenta buscar con otros términos
+      </p>
+    </div>
   );
 }

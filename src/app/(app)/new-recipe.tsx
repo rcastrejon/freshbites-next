@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sheet";
 import { createRecipe } from "./actions";
 import Form from "next/form";
+import { useFormStatus } from "react-dom";
 
 export function NewRecipeModal() {
   return (
@@ -37,11 +38,6 @@ export function NewRecipeModal() {
           </SheetDescription>
         </SheetHeader>
         <NewRecipeForm />
-        <SheetFooter>
-          <Button type="submit" form="new-recipe-form">
-            Publicar
-          </Button>
-        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
@@ -49,73 +45,78 @@ export function NewRecipeModal() {
 
 function NewRecipeForm() {
   return (
-    <Form
-      id="new-recipe-form"
-      className="m-0 grid gap-4 py-4"
-      action={createRecipe}
-    >
-      <ImageInput />
-      <div className="space-y-2">
-        <Label htmlFor="title">Título</Label>
-        <Input id="title" name="title" autoComplete="off" required />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="description">Descripción</Label>
-        <Textarea
-          id="description"
-          name="description"
-          autoComplete="off"
-          required
-          className="h-24"
-          onKeyDown={(e: React.KeyboardEvent) => {
-            if (e.key === "Enter") e.preventDefault();
-          }}
-        />
-      </div>
-      <div className="grid grid-cols-2 gap-4">
+    <Form classID="m-0" action={createRecipe}>
+      <div className="grid gap-4 py-4">
+        <ImageInput />
         <div className="space-y-2">
-          <Label htmlFor="timeInMinutes">Tiempo</Label>
-          <div className="relative">
+          <Label htmlFor="title">Título</Label>
+          <Input id="title" name="title" autoComplete="off" required />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="description">Descripción</Label>
+          <Textarea
+            id="description"
+            name="description"
+            autoComplete="off"
+            required
+            className="h-24"
+            onKeyDown={(e: React.KeyboardEvent) => {
+              if (e.key === "Enter") e.preventDefault();
+            }}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="timeInMinutes">Tiempo</Label>
+            <div className="relative">
+              <Input
+                id="timeInMinutes"
+                name="timeInMinutes"
+                className="peer pe-12"
+                type="number"
+                min="1"
+                required
+              />
+              <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
+                min
+              </span>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="servings">Porciones</Label>
             <Input
-              id="timeInMinutes"
-              name="timeInMinutes"
-              className="peer pe-12"
+              id="servings"
+              name="servings"
               type="number"
               min="1"
               required
             />
-            <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
-              min
-            </span>
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="servings">Porciones</Label>
-          <Input id="servings" name="servings" type="number" min="1" required />
+          <Label htmlFor="cost">Costo</Label>
+          <div className="relative">
+            <Input
+              id="cost"
+              name="cost"
+              className="peer pe-12 ps-6"
+              type="number"
+              min="1"
+              step="0.01"
+              required
+            />
+            <span className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm text-muted-foreground peer-disabled:opacity-50">
+              $
+            </span>
+            <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
+              MXN
+            </span>
+          </div>
         </div>
+        <ListInput mode="ingredients" />
+        <ListInput mode="instructions" />
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="cost">Costo</Label>
-        <div className="relative">
-          <Input
-            id="cost"
-            name="cost"
-            className="peer pe-12 ps-6"
-            type="number"
-            min="1"
-            step="0.01"
-            required
-          />
-          <span className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm text-muted-foreground peer-disabled:opacity-50">
-            $
-          </span>
-          <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
-            MXN
-          </span>
-        </div>
-      </div>
-      <ListInput mode="ingredients" />
-      <ListInput mode="instructions" />
+      <PublishButton />
     </Form>
   );
 }
@@ -266,5 +267,17 @@ function ListInput({ mode }: { mode: keyof typeof LIST_INPUT_MSG }) {
         ))}
       </ListElement>
     </div>
+  );
+}
+
+function PublishButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <SheetFooter>
+      <Button type="submit" disabled={pending}>
+        Publicar
+      </Button>
+    </SheetFooter>
   );
 }

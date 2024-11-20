@@ -44,7 +44,7 @@ export function RecipeCard({ recipe }: { recipe: RecipeWithAuthor }) {
         </div>
       </CardContent>
       <CardFooter className="p-2 pt-0">
-        <Button size="lg" variant="outline" className="w-full" asChild>
+        <Button variant="outline" className="w-full" asChild>
           <Link href={`/recipes/${recipe.id}`}>Ver receta</Link>
         </Button>
       </CardFooter>

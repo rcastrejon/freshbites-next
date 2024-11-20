@@ -51,11 +51,13 @@ export default async function RecipeDetails(props: {
           <VerifiedBadge isVerified={recipe.verifiedAt !== null} />
         </div>
         <div className="space-y-2">
-          <h1 className="font-serif text-2xl font-bold">{recipe.title}</h1>
-          <Suspense fallback={<Skeleton className="h-5 w-32" />}>
+          <h1 className="font-serif text-2xl font-bold leading-none">
+            {recipe.title}
+          </h1>
+          <Suspense fallback={<Skeleton className="h-3.5 w-32" />}>
             <AuthorName authorId={recipe.authorId} />
           </Suspense>
-          <p className="text-sm">{recipe.description}</p>
+          <p className="text-sm text-muted-foreground">{recipe.description}</p>
           <NutritionLabels nutritionFacts={recipe.nutritionalFacts} />
           <div className="flex flex-wrap gap-2">
             <Badge variant="secondary">
@@ -79,7 +81,7 @@ export default async function RecipeDetails(props: {
       </div>
       <Separator className="my-3" />
       <div className="grid gap-3 md:grid-cols-2">
-        <Card>
+        <Card className="bg-white">
           <CardHeader className="pb-2">
             <CardTitle className="font-serif text-xl font-semibold">
               Ingredientes
@@ -89,14 +91,14 @@ export default async function RecipeDetails(props: {
             <ul className="space-y-1 text-sm">
               {recipe.ingredients.map((ingredient, index) => (
                 <li key={index} className="flex items-center">
-                  <div className="mr-2 h-1.5 w-1.5 rounded-full bg-foreground"></div>
+                  <div className="mr-2 h-1.5 w-1.5 rounded-full bg-primary"></div>
                   {ingredient}
                 </li>
               ))}
             </ul>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-white">
           <CardHeader className="pb-2">
             <CardTitle className="font-serif text-xl font-semibold">
               Instrucciones
@@ -106,7 +108,7 @@ export default async function RecipeDetails(props: {
             <ol className="space-y-2 text-sm">
               {recipe.instructions.map((instruction, index) => (
                 <li key={index} className="flex items-start">
-                  <span className="mr-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold">
+                  <span className="mr-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">
                     {index + 1}
                   </span>
                   <p>{instruction}</p>
@@ -121,10 +123,12 @@ export default async function RecipeDetails(props: {
 }
 
 async function AuthorName({ authorId }: { authorId: string | null }) {
-  if (!authorId)
-    return <p className="font-serif text-sm italic">Por [ELIMINADO]</p>;
-  const author = await getAuthor(authorId);
-  return <p className="font-serif text-sm italic">Por {author}</p>;
+  const author = authorId ? await getAuthor(authorId) : "[ELIMINADO]";
+  return (
+    <p className="font-serif text-sm italic leading-none text-muted-foreground">
+      Por {author}
+    </p>
+  );
 }
 
 function NutritionLabels({
@@ -138,7 +142,7 @@ function NutritionLabels({
     <div className="grid grid-cols-2 gap-2 text-sm">
       {nutritionFacts.map((fact, index) => (
         <div key={index} className="rounded-lg bg-muted p-2.5">
-          <p className="font-medium">{fact.key}</p>
+          <p className="font-medium text-muted-foreground">{fact.key}</p>
           <p className="font-semibold">
             {fact.value} {fact.unit}
           </p>
