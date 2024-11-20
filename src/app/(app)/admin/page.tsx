@@ -12,11 +12,12 @@ import {
 import { db } from "@/lib/db";
 import { recipeTable } from "@/lib/db/schema";
 import { count, desc, isNull } from "drizzle-orm";
-import { ChevronRight, Trash } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
 import Link from "next/link";
 import { VerifyModal } from "./verify-modal";
+import { DeleteRecipeModal } from "./delete-recipe";
 
 async function getMetrics() {
   const [[unverifiedCount], [totalCount]] = await db.batch([
@@ -118,9 +119,7 @@ export default async function AdminDashboard() {
                   <TableCell>
                     <div className="flex gap-2">
                       <VerifyModal recipeId={recipe.id} />
-                      <Button variant="destructive" size="icon">
-                        <Trash className="h-4 w-4" />
-                      </Button>
+                      <DeleteRecipeModal recipeId={recipe.id} />
                     </div>
                   </TableCell>
                 </TableRow>
