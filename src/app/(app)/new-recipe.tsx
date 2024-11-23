@@ -207,13 +207,12 @@ function ListInput({ mode }: { mode: keyof typeof LIST_INPUT_MSG }) {
   }, [mode]);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const FieldElement = mode === "ingredients" ? Input : Textarea;
   const ListElement = mode === "ingredients" ? "ul" : "ol";
 
   return (
     <div className="space-y-2">
       <Label htmlFor={`${mode}-input`}>{LIST_INPUT_MSG[mode].title}</Label>
-      <FieldElement
+      <Textarea
         id={`${mode}-input`}
         placeholder="Presiona Enter para agregar"
         autoComplete="off"
