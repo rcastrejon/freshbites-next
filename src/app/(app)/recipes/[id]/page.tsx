@@ -79,7 +79,10 @@ export default async function RecipeDetails(props: {
             )}
             <Suspense
               fallback={
-                <Skeleton className="h-5 w-20 rounded-full bg-secondary" />
+                <Badge variant="secondary">
+                  <Users className="mr-1 h-3 w-3" />
+                  <div className="h-4 w-12" />
+                </Badge>
               }
             >
               <ViewsCounter recipeId={recipe.id} />

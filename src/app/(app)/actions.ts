@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { UTApi } from "uploadthing/server";
 import { upsertSingleVector } from "@/lib/server/vectors";
+import { and, eq } from "drizzle-orm";
 
 const currencySchema = z
   .string()
@@ -93,4 +94,41 @@ export async function createRecipe(formData: FormData) {
   });
 
   redirect(`/recipes/${newRecipe.id}`);
+}
+
+export async function editRecipe(recipeId: string, formData: FormData) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("Not authenticated");
+  }
+
+  const result = createRecipeSchema.safeParse({
+    title: formData.get("title"),
+    description: formData.get("description"),
+    timeInMinutes: Number(formData.get("timeInMinutes")),
+    cost: formData.get("cost"),
+    servings: Number(formData.get("servings")),
+    ingredients: formData.getAll("ingredients"),
+    instructions: formData.getAll("instructions"),
+  });
+
+  if (!result.success) {
+    console.error(result.error);
+    throw new Error("Invalid form data");
+  }
+
+  await db
+    .update(recipeTable)
+    .set(result.data)
+    .where(and(eq(recipeTable.id, recipeId), eq(recipeTable.authorId, userId)));
+
+  await upsertSingleVector(recipeId, {
+    id: recipeId,
+    title: result.data.title,
+    description: result.data.description,
+    ingredients: result.data.ingredients,
+    instructions: result.data.instructions,
+  });
+
+  redirect(`/recipes/${recipeId}`);
 }

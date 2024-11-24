@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { PlusCircle, XIcon, Trash, ImageIcon } from "lucide-react";
+import { PlusCircle, XIcon, Trash, ImageIcon, PencilRuler } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -15,7 +15,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { createRecipe } from "./actions";
+import { createRecipe, editRecipe } from "./actions";
 import Form from "next/form";
 import { useFormStatus } from "react-dom";
 
@@ -43,14 +43,69 @@ export function NewRecipeModal() {
   );
 }
 
-function NewRecipeForm() {
+export function EditRecipeModal({ recipe }: { recipe: Recipe }) {
   return (
-    <Form className="m-0" action={createRecipe}>
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline">
+          <PencilRuler className="h-4 w-4" />
+          Editar
+        </Button>
+      </SheetTrigger>
+      <SheetContent className="w-full overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle>Editar receta</SheetTitle>
+          <SheetDescription className="sr-only">
+            Usa el siguiente formulario para editar tu receta. Asegúrate de
+            incluir todos los detalles necesarios para que otros puedan
+            prepararla.
+          </SheetDescription>
+        </SheetHeader>
+        <EditRecipeForm recipe={recipe} />
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+interface Recipe {
+  id: string;
+  title: string;
+  description: string;
+  timeInMinutes: number;
+  servings: number;
+  cost: number;
+  ingredients: string[];
+  instructions: string[];
+}
+
+interface RecipeFormFields {
+  recipe?: Recipe;
+  action: NonNullable<
+    string | ((formData: FormData) => void | Promise<void>) | undefined
+  >;
+  submitLabel: string;
+  showImageInput?: boolean;
+}
+
+function RecipeFormFields({
+  recipe,
+  action,
+  submitLabel,
+  showImageInput,
+}: RecipeFormFields) {
+  return (
+    <Form className="m-0" action={action}>
       <div className="grid gap-4 py-4">
-        <ImageInput />
+        {showImageInput && <ImageInput />}
         <div className="space-y-2">
           <Label htmlFor="title">Título</Label>
-          <Input id="title" name="title" autoComplete="off" required />
+          <Input
+            id="title"
+            name="title"
+            autoComplete="off"
+            required
+            defaultValue={recipe?.title}
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="description">Descripción</Label>
@@ -60,6 +115,7 @@ function NewRecipeForm() {
             autoComplete="off"
             required
             className="h-24"
+            defaultValue={recipe?.description}
             onKeyDown={(e: React.KeyboardEvent) => {
               if (e.key === "Enter") e.preventDefault();
             }}
@@ -76,6 +132,7 @@ function NewRecipeForm() {
                 type="number"
                 min="1"
                 required
+                defaultValue={recipe?.timeInMinutes}
               />
               <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-3 text-sm text-muted-foreground peer-disabled:opacity-50">
                 min
@@ -90,6 +147,7 @@ function NewRecipeForm() {
               type="number"
               min="1"
               required
+              defaultValue={recipe?.servings}
             />
           </div>
         </div>
@@ -104,6 +162,7 @@ function NewRecipeForm() {
               min="1"
               step="0.01"
               required
+              defaultValue={recipe?.cost}
             />
             <span className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm text-muted-foreground peer-disabled:opacity-50">
               $
@@ -113,11 +172,32 @@ function NewRecipeForm() {
             </span>
           </div>
         </div>
-        <ListInput mode="ingredients" />
-        <ListInput mode="instructions" />
+        <ListInput mode="ingredients" initialItems={recipe?.ingredients} />
+        <ListInput mode="instructions" initialItems={recipe?.instructions} />
       </div>
-      <PublishButton />
+      <ActionButton>{submitLabel}</ActionButton>
     </Form>
+  );
+}
+
+function NewRecipeForm() {
+  return (
+    <RecipeFormFields
+      action={createRecipe}
+      submitLabel="Publicar"
+      showImageInput
+    />
+  );
+}
+
+function EditRecipeForm({ recipe }: { recipe: Recipe }) {
+  const editRecipeAction = editRecipe.bind(null, recipe.id);
+  return (
+    <RecipeFormFields
+      recipe={recipe}
+      action={editRecipeAction}
+      submitLabel="Guardar"
+    />
   );
 }
 
@@ -198,13 +278,23 @@ const LIST_INPUT_MSG = {
   },
 };
 
-function ListInput({ mode }: { mode: keyof typeof LIST_INPUT_MSG }) {
-  const [listItems, setListItems] = useState<string[]>([]);
+function ListInput({
+  mode,
+  initialItems = [],
+}: {
+  mode: keyof typeof LIST_INPUT_MSG;
+  initialItems?: string[];
+}) {
+  const [listItems, setListItems] = useState<string[]>(initialItems);
   const fieldRef = useRef<HTMLInputElement & HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    fieldRef.current?.setCustomValidity(LIST_INPUT_MSG[mode].validation);
-  }, [mode]);
+    if (initialItems.length > 0) {
+      fieldRef.current?.setCustomValidity("");
+    } else {
+      fieldRef.current?.setCustomValidity(LIST_INPUT_MSG[mode].validation);
+    }
+  }, [initialItems.length, mode]);
 
   const ListElement = mode === "ingredients" ? "ul" : "ol";
 
@@ -268,13 +358,12 @@ function ListInput({ mode }: { mode: keyof typeof LIST_INPUT_MSG }) {
   );
 }
 
-function PublishButton() {
+function ActionButton({ children }: React.PropsWithChildren) {
   const { pending } = useFormStatus();
-
   return (
     <SheetFooter>
       <Button type="submit" disabled={pending}>
-        Publicar
+        {children}
       </Button>
     </SheetFooter>
   );
