@@ -13,8 +13,7 @@ import { db } from "@/lib/db";
 import { recipeTable } from "@/lib/db/schema";
 import { count, desc, isNull } from "drizzle-orm";
 import { ChevronRight } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-import { es } from "date-fns/locale";
+import { intlFormat } from "date-fns";
 import Link from "next/link";
 import { VerifyModal } from "./verify-modal";
 import { DeleteRecipeModal } from "./delete-recipe";
@@ -111,9 +110,8 @@ export default async function AdminDashboard() {
                     {recipe.author?.username ?? "[ELIMINADO]"}
                   </TableCell>
                   <TableCell>
-                    {formatDistanceToNow(recipe.createdAt, {
-                      addSuffix: true,
-                      locale: es,
+                    {intlFormat(recipe.createdAt, {
+                      locale: "es-MX",
                     })}
                   </TableCell>
                   <TableCell>

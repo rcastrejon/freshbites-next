@@ -206,7 +206,6 @@ function ListInput({ mode }: { mode: keyof typeof LIST_INPUT_MSG }) {
     fieldRef.current?.setCustomValidity(LIST_INPUT_MSG[mode].validation);
   }, [mode]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const ListElement = mode === "ingredients" ? "ul" : "ol";
 
   return (

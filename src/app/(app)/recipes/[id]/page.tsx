@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { db } from "@/lib/db";
 import { type NutritionalFact, recipeTable, userTable } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { VerifiedBadge } from "../../card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Coins, Leaf, Utensils } from "lucide-react";
+import { Clock, Coins, Leaf, Users, Utensils } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Suspense } from "react";
@@ -77,6 +77,13 @@ export default async function RecipeDetails(props: {
                 kcal por porción
               </Badge>
             )}
+            <Suspense
+              fallback={
+                <Skeleton className="h-5 w-20 rounded-full bg-secondary" />
+              }
+            >
+              <ViewsCounter recipeId={recipe.id} />
+            </Suspense>
           </div>
           <ActionButtons recipe={recipe} />
         </div>
@@ -151,5 +158,26 @@ function NutritionLabels({
         </div>
       ))}
     </div>
+  );
+}
+
+const getRecipeViews = async (id: string) => {
+  const [result] = await db
+    .update(recipeTable)
+    .set({
+      views: sql`${recipeTable.views} + 1`,
+    })
+    .where(eq(recipeTable.id, id))
+    .returning({ views: recipeTable.views });
+  return result?.views ?? 0;
+};
+
+async function ViewsCounter({ recipeId }: { recipeId: string }) {
+  const views = await getRecipeViews(recipeId);
+  return (
+    <Badge variant="secondary">
+      <Users className="mr-1 h-3 w-3" /> {views}{" "}
+      {views === 1 ? "visita" : "visitas"}
+    </Badge>
   );
 }

@@ -6,6 +6,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { UTApi } from "uploadthing/server";
+import { upsertSingleVector } from "@/lib/server/vectors";
 
 const currencySchema = z
   .string()
@@ -82,6 +83,14 @@ export async function createRecipe(formData: FormData) {
   if (!newRecipe) {
     throw new Error("Failed to create recipe");
   }
+
+  await upsertSingleVector(newRecipe.id, {
+    id: newRecipe.id,
+    title: result.data.title,
+    description: result.data.description,
+    ingredients: result.data.ingredients,
+    instructions: result.data.instructions,
+  });
 
   redirect(`/recipes/${newRecipe.id}`);
 }

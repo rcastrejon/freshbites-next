@@ -12,12 +12,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import type { NutritionalFact } from "@/lib/db/schema";
-import { Label } from "@radix-ui/react-label";
 import { Check, Plus, XIcon } from "lucide-react";
 import Form from "next/form";
 import { useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { verifyRecipe } from "./actions";
+import { Label } from "@/components/ui/label";
 
 export function VerifyModal({ recipeId }: { recipeId: string }) {
   return (

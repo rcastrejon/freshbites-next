@@ -6,8 +6,11 @@ import { count, desc, inArray } from "drizzle-orm";
 import { recipeTable } from "@/lib/db/schema";
 import { queryVectors } from "@/lib/server/vectors";
 import { Suspense } from "react";
+import { FilterButton } from "./filter-button";
 
-const getRecipes = async (page: number) => {
+const sortSchema = z.enum(["recent", "views"]).catch("recent");
+
+const getRecipes = async (page: number, sort: z.infer<typeof sortSchema>) => {
   const PAGE_SIZE = 8;
 
   const offset = (page - 1) * PAGE_SIZE;
@@ -18,7 +21,10 @@ const getRecipes = async (page: number) => {
       with: {
         author: true,
       },
-      orderBy: desc(recipeTable.createdAt),
+      orderBy:
+        sort === "recent"
+          ? desc(recipeTable.createdAt)
+          : desc(recipeTable.views),
       limit: PAGE_SIZE,
       offset: offset,
     }),
@@ -62,12 +68,14 @@ export default function Recipes(props: { searchParams: SearchParams }) {
   const searchParams = props.searchParams.then((p) => ({
     page: p.page as string | undefined,
     q: p.q as string | undefined,
+    sort: p.sort as string | undefined,
   }));
   return (
     <div>
-      <h3 className="mb-3 border-b-2 border-b-foreground pb-1 font-serif text-2xl font-bold">
-        Recetas
-      </h3>
+      <div className="mb-3 flex justify-between border-b-2 border-b-foreground pb-1">
+        <h3 className="font-serif text-2xl font-bold">Recetas</h3>
+        <FilterButton />
+      </div>
       <CardGrid searchParams={searchParams} />
     </div>
   );
@@ -87,16 +95,18 @@ const searchSchema = z.union([
         return !isNaN(num) && num > 0;
       })
       .transform((v) => (v !== undefined ? parseInt(v) : undefined)),
+    sort: sortSchema,
   }),
 ]);
 
 async function CardGrid(props: {
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
-  const { page, q } = await props.searchParams;
+  const { page, q, sort } = await props.searchParams;
   const parsedSearch = searchSchema.parse({
     page,
     q,
+    sort,
   });
 
   if ("q" in parsedSearch) {
@@ -115,7 +125,10 @@ async function CardGrid(props: {
     );
   }
 
-  const { recipes, pagination } = await getRecipes(parsedSearch.page ?? 1);
+  const { recipes, pagination } = await getRecipes(
+    parsedSearch.page ?? 1,
+    parsedSearch.sort,
+  );
 
   if (recipes.length === 0) {
     return <NoResultsFound />;

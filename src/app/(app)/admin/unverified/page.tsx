@@ -12,10 +12,9 @@ import { VerifyModal } from "../verify-modal";
 import { db } from "@/lib/db";
 import { isNull, desc } from "drizzle-orm";
 import { recipeTable } from "@/lib/db/schema";
-import { formatDistanceToNow } from "date-fns";
-import { es } from "date-fns/locale";
 import Link from "next/link";
 import { DeleteRecipeModal } from "../delete-recipe";
+import { intlFormat } from "date-fns";
 
 async function getUnverifiedRecipes() {
   return db.query.recipeTable.findMany({
@@ -67,9 +66,8 @@ export default async function Page() {
                     {recipe.author?.username ?? "[ELIMINADO]"}
                   </TableCell>
                   <TableCell>
-                    {formatDistanceToNow(recipe.createdAt, {
-                      addSuffix: true,
-                      locale: es,
+                    {intlFormat(recipe.createdAt, {
+                      locale: "es-MX",
                     })}
                   </TableCell>
                   <TableCell>
