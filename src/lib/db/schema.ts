@@ -1,5 +1,11 @@
 import { relations, type SQL, sql } from "drizzle-orm";
-import { text, sqliteTable, real, integer } from "drizzle-orm/sqlite-core";
+import {
+  text,
+  sqliteTable,
+  real,
+  integer,
+  primaryKey,
+} from "drizzle-orm/sqlite-core";
 import { newId } from "../server/ids";
 
 export const userTable = sqliteTable("users", {
@@ -17,6 +23,7 @@ export const userTable = sqliteTable("users", {
 
 export const userRelations = relations(userTable, ({ many }) => ({
   posts: many(recipeTable),
+  likes: many(likeTable),
 }));
 
 export type NutritionalFact = {
@@ -47,9 +54,39 @@ export const recipeTable = sqliteTable("recipes", {
     .notNull(),
 });
 
-export const recipeRelations = relations(recipeTable, ({ one }) => ({
+export const recipeRelations = relations(recipeTable, ({ one, many }) => ({
   author: one(userTable, {
     fields: [recipeTable.authorId],
     references: [userTable.id],
+  }),
+  likes: many(likeTable),
+}));
+
+export const likeTable = sqliteTable(
+  "likes",
+  {
+    userId: text()
+      .notNull()
+      .references(() => userTable.id, { onDelete: "cascade" }),
+    recipeId: text()
+      .notNull()
+      .references(() => recipeTable.id, { onDelete: "cascade" }),
+    createdAt: text()
+      .default(sql`(CURRENT_TIMESTAMP)`)
+      .notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.userId, t.recipeId] }),
+  }),
+);
+
+export const likesRelations = relations(likeTable, ({ one }) => ({
+  user: one(userTable, {
+    fields: [likeTable.userId],
+    references: [userTable.id],
+  }),
+  recipe: one(recipeTable, {
+    fields: [likeTable.recipeId],
+    references: [recipeTable.id],
   }),
 }));

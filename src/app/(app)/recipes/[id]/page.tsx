@@ -1,6 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { db } from "@/lib/db";
-import { type NutritionalFact, recipeTable, userTable } from "@/lib/db/schema";
+import {
+  likeTable,
+  type NutritionalFact,
+  recipeTable,
+  userTable,
+} from "@/lib/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { VerifiedBadge } from "../../card";
@@ -10,11 +15,20 @@ import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ActionButtons } from "./buttons";
+import { AuthorActions, DynamicPinButton, LikeButton } from "./buttons";
+import { auth } from "@clerk/nextjs/server";
+import { getNumberOfLikes } from "./actions";
 
 const getRecipe = async (id: string) => {
+  const { userId } = await auth();
+
   const recipe = await db.query.recipeTable.findFirst({
     where: eq(recipeTable.id, id),
+    with: {
+      likes: {
+        where: eq(likeTable.userId, userId ?? "no-user"),
+      },
+    },
   });
   if (!recipe) {
     notFound();
@@ -88,7 +102,19 @@ export default async function RecipeDetails(props: {
               <ViewsCounter recipeId={recipe.id} />
             </Suspense>
           </div>
-          <ActionButtons recipe={recipe} />
+          <div className="grid grid-cols-[1fr,_auto] gap-2">
+            <div className="grid">
+              <DynamicPinButton recipe={recipe} />
+            </div>
+            <Suspense fallback={<Skeleton className="h-9 w-16" />}>
+              <LikeButton
+                recipeId={recipe.id}
+                liked={recipe.likes.length > 0}
+                numberOfLikesPromise={getNumberOfLikes(recipe.id)}
+              />
+            </Suspense>
+          </div>
+          <AuthorActions recipe={recipe} />
         </div>
       </div>
       <Separator className="my-3" />

@@ -1,10 +1,10 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { recipeTable } from "@/lib/db/schema";
+import { likeTable, recipeTable } from "@/lib/db/schema";
 import { deleteVector } from "@/lib/server/vectors";
 import { auth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 export async function deleteRecipe(recipeId: string) {
@@ -24,4 +24,30 @@ export async function deleteRecipe(recipeId: string) {
   await db.delete(recipeTable).where(eq(recipeTable.id, recipeId));
   await deleteVector(recipeId);
   redirect("/recipes");
+}
+
+export async function userLikesRecipe(recipeId: string) {
+  const { userId } = await auth();
+  if (!userId) redirect("/sign-in");
+  try {
+    await db.insert(likeTable).values({
+      userId,
+      recipeId,
+    });
+  } catch {
+    await db
+      .delete(likeTable)
+      .where(
+        and(eq(likeTable.userId, userId), eq(likeTable.recipeId, recipeId)),
+      );
+  }
+}
+
+export async function getNumberOfLikes(recipeId: string) {
+  const [result] = await db
+    .select({
+      likes: db.$count(likeTable, eq(likeTable.recipeId, recipeId)),
+    })
+    .from(likeTable);
+  return result?.likes ?? 0;
 }

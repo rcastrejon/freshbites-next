@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Book, House, Icon, Shield } from "lucide-react";
+import { Book, Heart, House, Icon, Shield } from "lucide-react";
 import { appleCore } from "@lucide/lab";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -74,10 +74,27 @@ function NavLinks() {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton isActive={pathname.includes("/recipes")} asChild>
+            <SidebarMenuButton
+              isActive={
+                pathname.includes("/recipes") &&
+                !pathname.includes("/recipes/liked")
+              }
+              asChild
+            >
               <Link href="/recipes">
                 <Book />
                 Recetas
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              isActive={pathname.includes("/recipes/liked")}
+              asChild
+            >
+              <Link href="/recipes/liked">
+                <Heart />
+                Favoritas
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
