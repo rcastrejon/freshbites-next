@@ -36,6 +36,12 @@ export function FilterButton() {
         >
           Visitas
         </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={sort === "likes"}
+          onCheckedChange={() => router.push("/recipes?sort=likes")}
+        >
+          Favoritos
+        </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

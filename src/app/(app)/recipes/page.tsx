@@ -2,38 +2,50 @@ import { RecipeCard } from "../card";
 import { z } from "zod";
 import { Pagination } from "./pagination";
 import { db } from "@/lib/db";
-import { count, desc, inArray } from "drizzle-orm";
-import { recipeTable } from "@/lib/db/schema";
+import { count, eq, inArray, sql } from "drizzle-orm";
+import { likeTable, recipeTable, userTable } from "@/lib/db/schema";
 import { queryVectors } from "@/lib/server/vectors";
 import { Suspense } from "react";
 import { FilterButton } from "./filter-button";
 
-const sortSchema = z.enum(["recent", "views"]).catch("recent");
+const sortSchema = z.enum(["recent", "views", "likes"]).catch("recent");
+
+function getSortExpression(sortBy: z.infer<typeof sortSchema>) {
+  switch (sortBy) {
+    case "views":
+      return sql`${recipeTable.views} DESC, ${recipeTable.createdAt} DESC`;
+    case "likes":
+      return sql`likes_count DESC, ${recipeTable.createdAt} DESC`;
+    case "recent":
+    default:
+      return sql`${recipeTable.createdAt} DESC`;
+  }
+}
 
 const getRecipes = async (page: number, sort: z.infer<typeof sortSchema>) => {
   const PAGE_SIZE = 8;
 
   const offset = (page - 1) * PAGE_SIZE;
 
-  const [[countResult], recipes] = await db.batch([
-    db.select({ count: count() }).from(recipeTable),
-    db.query.recipeTable.findMany({
-      with: {
-        author: true,
-      },
-      orderBy:
-        sort === "recent"
-          ? desc(recipeTable.createdAt)
-          : desc(recipeTable.views),
-      limit: PAGE_SIZE,
-      offset: offset,
-    }),
-  ]);
-  const totalCount = countResult?.count ?? 0;
+  const totalCount = await db.$count(recipeTable);
+
+  const results = await db
+    .select({
+      recipes: recipeTable,
+      author: userTable,
+      likesCount: count(likeTable.userId).as("likes_count"),
+    })
+    .from(recipeTable)
+    .leftJoin(userTable, eq(recipeTable.authorId, userTable.id))
+    .leftJoin(likeTable, eq(recipeTable.id, likeTable.recipeId))
+    .groupBy(recipeTable.id, userTable.id)
+    .orderBy(getSortExpression(sort))
+    .limit(PAGE_SIZE)
+    .offset(offset);
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
   return {
-    recipes: recipes,
+    recipes: results.map((r) => Object.assign(r.recipes, { author: r.author })),
     pagination: {
       totalPages,
       hasPreviousPage: page > 1,
