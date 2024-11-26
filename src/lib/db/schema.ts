@@ -48,7 +48,7 @@ export const recipeTable = sqliteTable("recipes", {
   ingredients: text({ mode: "json" }).$type<string[]>().default([]).notNull(),
   instructions: text({ mode: "json" }).$type<string[]>().default([]).notNull(),
   nutritionalFacts: text({ mode: "json" }).$type<NutritionalFact[]>(),
-  views: integer().default(0),
+  views: integer().notNull().default(0),
   createdAt: text()
     .default(sql`(CURRENT_TIMESTAMP)`)
     .notNull(),
