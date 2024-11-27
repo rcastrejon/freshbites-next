@@ -4,9 +4,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { esMX } from "@clerk/localizations";
 
 export const metadata: Metadata = {
-  title: "FreshBites",
+  title: "Recetario Foráneo",
   description:
-    "FreshBites es la plataforma definitiva diseñada específicamente para estudiantes universitarios que buscan cocinar de manera inteligente, saludable y económica.",
+    "Recetario Foráneo es la plataforma definitiva diseñada específicamente para estudiantes universitarios que buscan cocinar de manera inteligente, saludable y económica.",
 };
 
 export const viewport: Viewport = {
